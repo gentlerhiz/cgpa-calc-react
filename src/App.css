@@ -1,16 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500&display=swap');
+
 .calculator {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f7f7f7;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+  background-color: #e7e6d6;
+ 
+  border-radius: 7px;
+  box-shadow: 0 2px 4px rgba(213, 117, 21, 0.2);
 
+}
+body{
+  background-image: url(./bg.jpg);
+  background-size: cover;
+}
+.App{
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+  font-family: 'Nunito', sans-serif;
+}
 h1 {
-  font-size: 36px;
+  font-size: 26px;
   text-align: center;
   margin-bottom: 20px;
+  
 }
 
 form {
@@ -37,35 +52,49 @@ form button {
   font-size: 18px;
   border-radius: 5px;
   border: none;
-  background-color: #007bff;
+  background-color: #e1b70d;
+  opacity: 90%;
   color: #fff;
   cursor: pointer;
 }
-
+form button:hover {
+  background-color: #7912cd;
+  transition: 2s;
+}
 table {
   border-collapse: collapse;
   width: 100%;
+  font-size: 0.65rem;
 }
 
 table th,
 table td {
   padding: 10px;
   text-align: left;
+  outline: none;
 }
 
 table th {
-  background-color: #007bff;
+  background-color: #7912cd;
   color: #fff;
 }
 
 table tr:nth-child(even) {
   background-color: #f2f2f2;
 }
-
+table tr td:nth-child(odd) {
+  font-weight: bold;
+}
+table tr td{
+  font-size: 1rem;
+}
+table tr td:last-child:hover{
+  color: #e1b70d;
+}
 .cgpa {
   text-align: center;
   margin-top: 20px;
-  font-size: 24px;
+  font-size: 18px;
 }
 
 .cgpa p {

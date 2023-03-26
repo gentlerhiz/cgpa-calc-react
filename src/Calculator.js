@@ -75,7 +75,7 @@ function Calculator() {
               <th>Course Unit</th>
               <th>Score</th>
               <th>Grade Points</th>
-              <th></th>
+              <th>x</th>
             </tr>
           </thead>
           <tbody>
@@ -86,7 +86,7 @@ function Calculator() {
                 <td>{course.score}</td>
                 <td>{course.gradePoints}</td>
                 <td>
-                  <button onClick={() => handleDelete(index)}>Delete</button>
+                    <ion-icon className="del" name="close-circle" onClick={() => handleDelete(index)}></ion-icon>
                 </td>
               </tr>
             ))}
@@ -96,8 +96,8 @@ function Calculator() {
 
       {courses.length > 0 && (
         <div className="cgpa">
-          <p>Total Units: {getTotalUnits()}</p>
-          <p>CGPA: {getCGPA()}</p>
+          <p>Total Units: <b>{getTotalUnits()}</b> CGPA: <b>{getCGPA()}</b></p>
+          
         </div>
       )}
     </div>
