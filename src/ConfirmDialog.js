@@ -10,9 +10,10 @@ export default function ConfirmDialog({ title, message, confirmLabel, cancelLabe
 
   useEffect(() => {
     const opener = document.activeElement;
+    const fallback = fallbackFocus?.current;
     cancelRef.current?.focus();
     return () => {
-      const target = opener && document.body.contains(opener) ? opener : fallbackFocus?.current;
+      const target = opener && document.body.contains(opener) ? opener : fallback;
       target?.focus();
     };
   }, [fallbackFocus]);
