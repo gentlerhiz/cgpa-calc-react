@@ -26,7 +26,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.title = calculator ? "Your results | CGPA Calculator" : "CGPA Calculator";
+    document.title = calculator
+      ? "Your results | CGPA Calculator"
+      : "CGPA Calculator: 5.0 and 4.0 scale, with degree class";
   }, [calculator]);
 
   return calculator ? <Calculator /> : <Landing />;
