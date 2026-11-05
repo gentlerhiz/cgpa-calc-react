@@ -117,11 +117,19 @@ button {
 .btn-gold {
   background: var(--gold);
   color: var(--night);
-  box-shadow: 0 8px 24px -10px rgba(246, 185, 59, 0.8);
 }
 
 .btn-gold:hover {
   background: #ffc955;
+}
+
+.btn-sky {
+  background: var(--sky);
+  color: var(--night);
+}
+
+.btn-sky:hover {
+  background: #94baff;
 }
 
 .btn-ghost {
