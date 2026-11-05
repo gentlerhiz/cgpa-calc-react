@@ -210,6 +210,11 @@
   border-color: #7a4cff;
 }
 
+/* No outline ring on these inputs; the purple border shows focus. */
+.slip #courseCode:focus-visible {
+  outline: none;
+}
+
 .add-btn {
   height: 46px;
   /* Lines the button up with the inputs, below their labels. */
