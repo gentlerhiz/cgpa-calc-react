@@ -34,3 +34,47 @@ export function EmptySlip() {
     </svg>
   );
 }
+
+// A large mortarboard with a tassel and sparkles, for the hero and closing band.
+export function HeroCap({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 220 180" aria-hidden="true">
+      <defs>
+        <linearGradient id="cap-top" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#4b2aa8" />
+          <stop offset="1" stopColor="#2a1660" />
+        </linearGradient>
+        <linearGradient id="cap-base" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#3a2180" />
+          <stop offset="1" stopColor="#1f1048" />
+        </linearGradient>
+      </defs>
+      <path d="M56 86v34c0 14 24 26 54 26s54-12 54-26V86l-54 24-54-24Z" fill="url(#cap-base)" />
+      <path d="M110 30 14 74l96 44 96-44-96-44Z" fill="url(#cap-top)" stroke="#b7a3ff" strokeOpacity=".5" strokeWidth="2" />
+      <path d="M110 74c-6 0-10 2-10 4s4 4 10 4 10-2 10-4-4-4-10-4Z" fill="#f6b93b" />
+      <path d="M110 78 186 90v40" fill="none" stroke="#f6b93b" strokeWidth="4" strokeLinecap="round" />
+      <path d="M178 128h16l-3 26h-10l-3-26Z" fill="#f6b93b" />
+      <path d="M181 154h10" stroke="#e0951a" strokeWidth="3" strokeLinecap="round" />
+      <path d="M36 28l3 8 8 3-8 3-3 8-3-8-8-3 8-3 3-8Z" fill="#f6b93b" />
+      <path d="M196 32l2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5Z" fill="#b7a3ff" />
+      <circle cx="24" cy="120" r="4" fill="#3fd0a0" />
+    </svg>
+  );
+}
+
+// A stack of three textbooks.
+export function BookStack({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 160 120" aria-hidden="true">
+      <rect x="18" y="80" width="124" height="26" rx="6" fill="#3fd0a0" />
+      <rect x="18" y="80" width="14" height="26" rx="4" fill="#2aa57d" />
+      <rect x="40" y="90" width="80" height="4" rx="2" fill="#b9f2de" />
+      <rect x="30" y="54" width="108" height="26" rx="6" fill="#b7a3ff" />
+      <rect x="124" y="54" width="14" height="26" rx="4" fill="#8f78e8" />
+      <rect x="44" y="64" width="64" height="4" rx="2" fill="#e8e0ff" />
+      <rect x="24" y="30" width="112" height="24" rx="6" fill="#f6b93b" transform="rotate(-6 80 42)" />
+      <rect x="40" y="38" width="60" height="4" rx="2" fill="#fde7b5" transform="rotate(-6 80 42)" />
+      <path d="M100 28c8-14 22-18 30-14-6 2-10 8-12 16" fill="#ff7a66" />
+    </svg>
+  );
+}
