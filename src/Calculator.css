@@ -211,7 +211,8 @@
 }
 
 /* No outline ring on these inputs; the purple border shows focus. */
-.slip #courseCode:focus-visible {
+.slip #courseCode:focus-visible,
+.slip #courseUnit:focus-visible {
   outline: none;
 }
 
