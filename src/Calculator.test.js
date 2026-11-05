@@ -63,7 +63,7 @@ test('tidies course codes and refuses duplicates in a semester', () => {
   addCourse(' gst101 ', 3, 50);
   addCourse('GST101', 3, 50);
   expect(screen.getAllByText('GST101')).toHaveLength(1);
-  expect(screen.getByRole('alert')).toHaveTextContent('GST101 is already in Semester 1.');
+  expect(screen.getByLabelText(/course code/i)).toHaveAccessibleDescription('GST101 is already in Semester 1.');
 });
 
 test('clears everything after confirming in the dialog', () => {
@@ -103,10 +103,45 @@ test('removes a semester after confirming', () => {
 
 test('plans the average needed for a target', () => {
   render(<Calculator />);
-  addCourse('MTH101', 10, 65); // B: 4 points over 10 units
+  addCourse('MTH101', 5, 65); // B: 4 points
+  addCourse('PHY101', 5, 65); // B: 4 points, so 40 points over 10 units
   fireEvent.change(screen.getByLabelText(/target cgpa/i), { target: { value: '4.5' } });
   fireEvent.change(screen.getByLabelText(/units left/i), { target: { value: '10' } });
   expect(screen.getByText(/average of 5\.00 grade points per unit, about A/i)).toBeInTheDocument();
   fireEvent.change(screen.getByLabelText(/target cgpa/i), { target: { value: '4.9' } });
   expect(screen.getByText(/out of reach.*finish on is 4\.50/i)).toBeInTheDocument();
+});
+
+test('shows an error under each invalid field and adds nothing', () => {
+  render(<Calculator />);
+  fireEvent.click(screen.getByRole('button', { name: /add course/i }));
+  expect(screen.getByLabelText(/course code/i)).toHaveAccessibleDescription('Enter a course code, like MTH101.');
+  expect(screen.getByLabelText(/course unit/i)).toHaveAccessibleDescription('Enter the course units.');
+  expect(screen.getByLabelText(/^score$/i)).toHaveAccessibleDescription('Enter your score.');
+  expect(screen.getByLabelText(/course code/i)).toHaveFocus();
+  expect(screen.queryByRole('table')).not.toBeInTheDocument();
+});
+
+test('clears a field error as soon as the value is fixed', () => {
+  render(<Calculator />);
+  addCourse('MTH101', 9, 150);
+  const units = screen.getByLabelText(/course unit/i);
+  expect(units).toHaveAttribute('aria-invalid', 'true');
+  expect(screen.getByText('Score must be a whole number from 0 to 100.')).toBeInTheDocument();
+  fireEvent.change(units, { target: { value: '3' } });
+  expect(units).not.toHaveAttribute('aria-invalid');
+  expect(screen.queryByText(/units must be/i)).not.toBeInTheDocument();
+  expect(screen.getByText('Score must be a whole number from 0 to 100.')).toBeInTheDocument();
+});
+
+test('checks the planner fields and keeps them after a reload', () => {
+  const { unmount } = render(<Calculator />);
+  fireEvent.change(screen.getByLabelText(/target cgpa/i), { target: { value: '6' } });
+  expect(screen.getByLabelText(/target cgpa/i)).toHaveAccessibleDescription('Enter a CGPA from 0 to 5.00.');
+  fireEvent.change(screen.getByLabelText(/target cgpa/i), { target: { value: '4.5' } });
+  fireEvent.change(screen.getByLabelText(/units left/i), { target: { value: '40' } });
+  unmount();
+  render(<Calculator />);
+  expect(screen.getByLabelText(/target cgpa/i)).toHaveValue('4.5');
+  expect(screen.getByLabelText(/units left/i)).toHaveValue('40');
 });

@@ -12,7 +12,7 @@ export const newSemester = (number) => ({
 
 const fresh = () => {
   const first = newSemester(1);
-  return { scale: "five", semesters: [first], activeId: first.id };
+  return { scale: "five", semesters: [first], activeId: first.id, planner: { target: "", remaining: "" } };
 };
 
 // Loads saved data, moving a list saved by the first version of the app

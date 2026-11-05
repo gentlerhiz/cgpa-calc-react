@@ -172,12 +172,13 @@
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) auto;
   gap: 12px;
-  align-items: end;
+  align-items: start;
   margin: 20px 0 8px;
 }
 
 .field {
   display: grid;
+  align-content: start;
   gap: 6px;
 }
 
@@ -211,12 +212,37 @@
 
 .add-btn {
   height: 46px;
+  /* Lines the button up with the inputs, below their labels. */
+  margin-top: calc(0.85rem * 1.55 + 6px);
 }
 
-.error {
-  margin: 8px 0 0;
-  color: #c2412f;
+.field-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin: 0;
+  font-size: 0.82rem;
   font-weight: 600;
+  line-height: 1.35;
+  color: #c2412f;
+}
+
+.field-error svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.slip .field input[aria-invalid="true"] {
+  border-color: #e0604c;
+  background: #fff6f4;
+}
+
+.planner .field-error {
+  color: #ffb3a7;
+}
+
+.planner .field input[aria-invalid="true"] {
+  border-color: var(--coral);
 }
 
 /* Empty state */
@@ -544,6 +570,10 @@
   .field-code,
   .add-btn {
     grid-column: 1 / -1;
+  }
+
+  .add-btn {
+    margin-top: 4px;
   }
 
   .courses th,

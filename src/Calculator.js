@@ -4,6 +4,8 @@ import { BookOpen, Home, Plus, RotateCcw, Target, Trash2, X } from "lucide-react
 import "./Calculator.css";
 import ConfirmDialog from "./ConfirmDialog";
 import Dial from "./Dial";
+import Field from "./Field";
+import { validateCourse, validatePlan } from "./validation";
 import { CapMark, EmptySlip } from "./illustrations";
 import {
   SCALES,
@@ -18,11 +20,12 @@ import { load, newId, newSemester, save } from "./storage";
 
 const tone = (letter) => `grade-${letter.toLowerCase()}`;
 
+const EMPTY_DRAFT = { courseCode: "", courseUnit: "", score: "" };
+
 function Calculator() {
   const [data, setData] = useState(load);
-  const [error, setError] = useState("");
-  const [target, setTarget] = useState("");
-  const [remaining, setRemaining] = useState("");
+  const [draft, setDraft] = useState(EMPTY_DRAFT);
+  const [fieldErrors, setFieldErrors] = useState({});
   const [confirm, setConfirm] = useState(null);
   const codeInputRef = useRef(null);
 
@@ -50,28 +53,44 @@ function Calculator() {
 
   const selectSemester = (id) => {
     setData((d) => ({ ...d, activeId: id }));
-    setError("");
+    setFieldErrors({});
+  };
+
+  const checkDraft = (next) =>
+    validateCourse(
+      next,
+      active.courses.map((c) => c.courseCode),
+      active.name || "this semester"
+    );
+
+  // Once a field shows an error, it is checked again as the user types,
+  // so the message goes as soon as the value is fixed.
+  const changeDraft = (key) => (value) => {
+    const next = { ...draft, [key]: value };
+    setDraft(next);
+    if (fieldErrors[key]) {
+      const { errors } = checkDraft(next);
+      setFieldErrors((current) => ({ ...current, [key]: errors[key] }));
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const form = event.target.elements;
-    const courseCode = form.courseCode.value.trim().toUpperCase();
-    if (active.courses.some((c) => c.courseCode === courseCode)) {
-      setError(`${courseCode} is already in ${active.name}.`);
+    const { errors, course } = checkDraft(draft);
+    setFieldErrors(errors);
+    if (!course) {
+      document.getElementById(Object.keys(errors)[0])?.focus();
       return;
     }
-    setError("");
-    const course = {
-      id: newId(),
-      courseCode,
-      courseUnit: parseInt(form.courseUnit.value, 10),
-      score: parseInt(form.score.value, 10),
-    };
-    updateActive((s) => ({ ...s, courses: [...s.courses, course] }));
-    event.target.reset();
-    form.courseCode.focus();
+    updateActive((s) => ({ ...s, courses: [...s.courses, { id: newId(), ...course }] }));
+    setDraft(EMPTY_DRAFT);
+    codeInputRef.current?.focus();
   };
+
+  const planner = data.planner ?? { target: "", remaining: "" };
+  const changePlanner = (key) => (value) =>
+    setData((d) => ({ ...d, planner: { ...(d.planner ?? {}), [key]: value } }));
+  const planCheck = validatePlan(planner, scaleInfo.max);
 
   const removeCourse = (id) =>
     updateActive((s) => ({ ...s, courses: s.courses.filter((c) => c.id !== id) }));
@@ -79,7 +98,7 @@ function Calculator() {
   const addSemester = () => {
     const semester = newSemester(semesters.length + 1);
     setData((d) => ({ ...d, semesters: [...d.semesters, semester], activeId: semester.id }));
-    setError("");
+    setFieldErrors({});
   };
 
   const removeSemester = () => {
@@ -110,20 +129,19 @@ function Calculator() {
       onConfirm: () => {
         const first = newSemester(1);
         setData((d) => ({ ...d, semesters: [first], activeId: first.id }));
-        setError("");
+        setFieldErrors({});
       },
     });
 
-  const plan =
-    target !== "" && remaining !== ""
-      ? planTarget({
-          units: overall.units,
-          points: overall.points,
-          target: parseFloat(target),
-          remainingUnits: parseInt(remaining, 10),
-          scale,
-        })
-      : null;
+  const plan = planCheck.ready
+    ? planTarget({
+        units: overall.units,
+        points: overall.points,
+        target: planCheck.target,
+        remainingUnits: planCheck.remaining,
+        scale,
+      })
+    : null;
 
   return (
     <div className="calc">
@@ -190,29 +208,41 @@ function Calculator() {
               </p>
             </div>
 
-            <form className="add-row" onSubmit={handleSubmit}>
-              <div className="field field-code">
-                <label htmlFor="courseCode">Course code</label>
-                <input ref={codeInputRef} type="text" id="courseCode" name="courseCode" placeholder="MTH101" autoComplete="off" required />
-              </div>
-              <div className="field">
-                <label htmlFor="courseUnit">Course unit</label>
-                <input type="number" id="courseUnit" name="courseUnit" min="1" max="6" placeholder="3" required />
-              </div>
-              <div className="field">
-                <label htmlFor="score">Score</label>
-                <input type="number" id="score" name="score" min="0" max="100" placeholder="72" required />
-              </div>
+            <form className="add-row" onSubmit={handleSubmit} noValidate>
+              <Field
+                id="courseCode"
+                label="Course code"
+                className="field-code"
+                placeholder="MTH101"
+                autoCapitalize="characters"
+                inputRef={codeInputRef}
+                value={draft.courseCode}
+                onChange={changeDraft("courseCode")}
+                error={fieldErrors.courseCode}
+              />
+              <Field
+                id="courseUnit"
+                label="Course unit"
+                placeholder="3"
+                inputMode="numeric"
+                value={draft.courseUnit}
+                onChange={changeDraft("courseUnit")}
+                error={fieldErrors.courseUnit}
+              />
+              <Field
+                id="score"
+                label="Score"
+                placeholder="72"
+                inputMode="numeric"
+                value={draft.score}
+                onChange={changeDraft("score")}
+                error={fieldErrors.score}
+              />
               <button type="submit" className="btn btn-gold add-btn">
                 <Plus size={18} aria-hidden="true" />
                 Add course
               </button>
             </form>
-            {error && (
-              <p role="alert" className="error">
-                {error}
-              </p>
-            )}
 
             {active.courses.length === 0 ? (
               <div className="empty">
@@ -311,36 +341,30 @@ function Calculator() {
             </div>
           )}
 
-          <form className="planner" onSubmit={(e) => e.preventDefault()}>
+          <form className="planner" onSubmit={(e) => e.preventDefault()} noValidate>
             <h2>
               <Target size={18} aria-hidden="true" />
               Plan a target
             </h2>
             <div className="planner-fields">
-              <div className="field">
-                <label htmlFor="target">Target CGPA</label>
-                <input
-                  id="target"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  max={scaleInfo.max}
-                  placeholder={scale === "five" ? "4.50" : "3.50"}
-                  value={target}
-                  onChange={(e) => setTarget(e.target.value)}
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="remaining">Units left</label>
-                <input
-                  id="remaining"
-                  type="number"
-                  min="0"
-                  placeholder="48"
-                  value={remaining}
-                  onChange={(e) => setRemaining(e.target.value)}
-                />
-              </div>
+              <Field
+                id="target"
+                label="Target CGPA"
+                inputMode="decimal"
+                placeholder={scale === "five" ? "4.50" : "3.50"}
+                value={planner.target}
+                onChange={changePlanner("target")}
+                error={planCheck.errors.target}
+              />
+              <Field
+                id="remaining"
+                label="Units left"
+                inputMode="numeric"
+                placeholder="48"
+                value={planner.remaining}
+                onChange={changePlanner("remaining")}
+                error={planCheck.errors.remaining}
+              />
             </div>
             <p className="planner-result" aria-live="polite">
               {!plan && "Enter a target and the units you still have to take."}
