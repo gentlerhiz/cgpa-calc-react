@@ -121,3 +121,7 @@ table tr td:last-child:hover{
   color: inherit;
   cursor: pointer;
 }
+.error {
+  color: #ff6b6b;
+  font-weight: bold;
+}

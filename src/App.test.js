@@ -43,3 +43,17 @@ test('clears every course after confirming', () => {
   fireEvent.click(screen.getByRole('button', { name: /clear all/i }));
   expect(screen.queryByText('CHM101')).not.toBeInTheDocument();
 });
+
+test('tidies course codes and refuses duplicates', () => {
+  render(<App />);
+  const add = (code) => {
+    fireEvent.change(screen.getByLabelText(/course code/i), { target: { value: code } });
+    fireEvent.change(screen.getByLabelText(/course unit/i), { target: { value: '3' } });
+    fireEvent.change(screen.getByLabelText(/score/i), { target: { value: '50' } });
+    fireEvent.click(screen.getByRole('button', { name: /add course/i }));
+  };
+  add(' gst101 ');
+  add('GST101');
+  expect(screen.getAllByText('GST101')).toHaveLength(1);
+  expect(screen.getByRole('alert')).toHaveTextContent('GST101 is already in the list.');
+});
