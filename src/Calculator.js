@@ -7,9 +7,9 @@ function Calculator() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const courseCode = event.target.courseCode.value;
-    const courseUnit = parseInt(event.target.courseUnit.value);
-    const score = parseInt(event.target.score.value);
+    const courseCode = event.target.elements.courseCode.value;
+    const courseUnit = parseInt(event.target.elements.courseUnit.value);
+    const score = parseInt(event.target.elements.score.value);
     const gradePoints = getGradePoints(score);
     const newCourse = { courseCode, courseUnit, score, gradePoints };
     setCourses([...courses, newCourse]);
@@ -57,13 +57,13 @@ function Calculator() {
       <h1>CGPA Calculator</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="courseCode">Course Code</label>
-        <input type="text" id="courseCode" required />
+        <input type="text" id="courseCode" name="courseCode" required />
 
         <label htmlFor="courseUnit">Course Unit</label>
-        <input type="number" id="courseUnit" min="1" max="6" required />
+        <input type="number" id="courseUnit" name="courseUnit" min="1" max="6" required />
 
         <label htmlFor="score">Score</label>
-        <input type="number" id="score" min="1" max="100" required />
+        <input type="number" id="score" name="score" min="1" max="100" required />
 
         <button type="submit">Add Course</button>
       </form>
@@ -75,7 +75,7 @@ function Calculator() {
               <th>Course Unit</th>
               <th>Score</th>
               <th>Grade Points</th>
-              <th>x</th>
+              <th>Remove</th>
             </tr>
           </thead>
           <tbody>
@@ -86,7 +86,14 @@ function Calculator() {
                 <td>{course.score}</td>
                 <td>{course.gradePoints}</td>
                 <td>
-                    <ion-icon className="del" name="close-circle" onClick={() => handleDelete(index)}></ion-icon>
+                  <button
+                    type="button"
+                    className="del"
+                    aria-label={`Remove ${course.courseCode}`}
+                    onClick={() => handleDelete(index)}
+                  >
+                    <ion-icon name="close-circle" aria-hidden="true"></ion-icon>
+                  </button>
                 </td>
               </tr>
             ))}
