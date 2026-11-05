@@ -122,7 +122,7 @@ export default function Landing() {
           <a href="#how">How it works</a>
           <a href="#scales">Grading scales</a>
         </nav>
-        <a className="btn btn-gold nav-cta" href="#/calculator">
+        <a className="btn btn-sky nav-cta" href="#/calculator">
           Open calculator
         </a>
       </header>
@@ -136,7 +136,7 @@ export default function Landing() {
               your target update as you type.
             </p>
             <div className="hero-actions">
-              <a className="btn btn-gold btn-lg" href="#/calculator">
+              <a className="btn btn-sky btn-lg" href="#/calculator">
                 <CalcIcon size={20} aria-hidden="true" />
                 Open the calculator
               </a>
@@ -246,7 +246,7 @@ export default function Landing() {
         <section className="closer">
           <HeroCap className="closer-cap" />
           <h2>Know where you stand before results day.</h2>
-          <a className="btn btn-gold btn-lg" href="#/calculator">
+          <a className="btn btn-sky btn-lg" href="#/calculator">
             <CalcIcon size={20} aria-hidden="true" />
             Open the calculator
           </a>
