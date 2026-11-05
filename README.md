@@ -1,71 +1,34 @@
-# Getting Started with Create React App
+# CGPA Calculator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A small React app that works out your CGPA from your courses. Add each course's code, unit and score, and the table shows its letter grade and grade points. The total units and CGPA update as you go.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Letter grade and grade points for each course
+- Courses are saved in your browser, so a refresh keeps them
+- Course codes are tidied (` mth101 ` becomes `MTH101`), and duplicates are refused
+- Remove one course, or clear the whole list
+- Works from the keyboard
 
-### `npm start`
+## Grading scale
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+| Score | Grade | Points |
+| --- | --- | --- |
+| 70 to 100 | A | 4 |
+| 60 to 69 | B | 3 |
+| 50 to 59 | C | 2 |
+| 45 to 49 | D | 1 |
+| 0 to 44 | F | 0 |
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+CGPA is the sum of (grade points × units) divided by the total units. The scale lives in [`src/grading.js`](src/grading.js) if you need to change it.
 
-### `npm test`
+## Run it locally
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install
+npm start      # opens http://localhost:3000
+npm test       # runs the tests
+npm run build  # production build in build/
+```
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# cgpa-calc-react
+Built with [Create React App](https://create-react-app.dev/).
