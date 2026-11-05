@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import "./App.css";
+import { getGradePoints, getLetterGrade } from "./grading";
 
 const STORAGE_KEY = "cgpa-courses";
 
@@ -43,28 +44,6 @@ function Calculator() {
 
   const handleDelete = (index) => {
     setCourses(courses.filter((course, i) => i !== index));
-  };
-
-  const getGradePoints = (score) => {
-    if (score >= 70) {
-      return 4;
-    } else if (score >= 60) {
-      return 3;
-    } else if (score >= 50) {
-      return 2;
-    } else if (score >= 45) {
-      return 1;
-    } else {
-      return 0;
-    }
-  };
-
-  const getLetterGrade = (score) => {
-    if (score >= 70) return "A";
-    if (score >= 60) return "B";
-    if (score >= 50) return "C";
-    if (score >= 45) return "D";
-    return "F";
   };
 
   const getTotalUnits = () => {
