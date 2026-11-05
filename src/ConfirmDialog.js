@@ -49,7 +49,7 @@ export default function ConfirmDialog({ title, message, confirmLabel, cancelLabe
         onKeyDown={onKeyDown}
       >
         <span className="modal-icon" aria-hidden="true">
-          <AlertTriangle size={22} />
+          <AlertTriangle size={18} />
         </span>
         <h2 id="confirm-title">{title}</h2>
         <p id="confirm-message">{message}</p>
