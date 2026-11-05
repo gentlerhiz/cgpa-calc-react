@@ -92,8 +92,15 @@ function Calculator() {
     setData((d) => ({ ...d, planner: { ...(d.planner ?? {}), [key]: value } }));
   const planCheck = validatePlan(planner, scaleInfo.max);
 
-  const removeCourse = (id) =>
-    updateActive((s) => ({ ...s, courses: s.courses.filter((c) => c.id !== id) }));
+  const removeCourse = (course) =>
+    setConfirm({
+      title: `Remove ${course.courseCode}?`,
+      message: `It comes out of ${active.name || "this semester"} and your CGPA is worked out again.`,
+      confirmLabel: "Remove course",
+      cancelLabel: "Keep it",
+      onConfirm: () =>
+        updateActive((s) => ({ ...s, courses: s.courses.filter((c) => c.id !== course.id) })),
+    });
 
   const addSemester = () => {
     const semester = newSemester(semesters.length + 1);
@@ -280,7 +287,7 @@ function Calculator() {
                             type="button"
                             className="icon-btn"
                             aria-label={`Remove ${course.courseCode}`}
-                            onClick={() => removeCourse(course.id)}
+                            onClick={() => removeCourse(course)}
                           >
                             <X size={18} aria-hidden="true" />
                           </button>
