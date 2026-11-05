@@ -34,6 +34,14 @@ function Calculator() {
     }
   };
 
+  const getLetterGrade = (score) => {
+    if (score >= 70) return "A";
+    if (score >= 60) return "B";
+    if (score >= 50) return "C";
+    if (score >= 45) return "D";
+    return "F";
+  };
+
   const getTotalUnits = () => {
     return courses.reduce((total, course) => total + course.courseUnit, 0);
   };
@@ -74,6 +82,7 @@ function Calculator() {
               <th>Course Code</th>
               <th>Course Unit</th>
               <th>Score</th>
+              <th>Grade</th>
               <th>Grade Points</th>
               <th>Remove</th>
             </tr>
@@ -84,6 +93,7 @@ function Calculator() {
                 <td>{course.courseCode}</td>
                 <td>{course.courseUnit}</td>
                 <td>{course.score}</td>
+                <td>{getLetterGrade(course.score)}</td>
                 <td>{course.gradePoints}</td>
                 <td>
                   <button
