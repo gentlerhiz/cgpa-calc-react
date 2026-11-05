@@ -32,3 +32,14 @@ test('keeps added courses after a reload', () => {
   render(<App />);
   expect(screen.getByText('PHY101')).toBeInTheDocument();
 });
+
+test('clears every course after confirming', () => {
+  jest.spyOn(window, 'confirm').mockReturnValue(true);
+  render(<App />);
+  fireEvent.change(screen.getByLabelText(/course code/i), { target: { value: 'CHM101' } });
+  fireEvent.change(screen.getByLabelText(/course unit/i), { target: { value: '3' } });
+  fireEvent.change(screen.getByLabelText(/score/i), { target: { value: '65' } });
+  fireEvent.click(screen.getByRole('button', { name: /add course/i }));
+  fireEvent.click(screen.getByRole('button', { name: /clear all/i }));
+  expect(screen.queryByText('CHM101')).not.toBeInTheDocument();
+});
