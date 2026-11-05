@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import Calculator from './Calculator';
 
 beforeEach(() => localStorage.clear());
@@ -66,12 +66,39 @@ test('tidies course codes and refuses duplicates in a semester', () => {
   expect(screen.getByRole('alert')).toHaveTextContent('GST101 is already in Semester 1.');
 });
 
-test('clears everything after confirming', () => {
-  jest.spyOn(window, 'confirm').mockReturnValue(true);
+test('clears everything after confirming in the dialog', () => {
   render(<Calculator />);
   addCourse('CHM101', 3, 65);
   fireEvent.click(screen.getByRole('button', { name: /clear all/i }));
+  const dialog = screen.getByRole('alertdialog', { name: /clear everything/i });
+  expect(within(dialog).getByRole('button', { name: /keep my results/i })).toHaveFocus();
+  fireEvent.click(within(dialog).getByRole('button', { name: /clear everything/i }));
+  expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
   expect(screen.queryByText('CHM101')).not.toBeInTheDocument();
+});
+
+test('keeps the semester when the dialog is cancelled with Escape', () => {
+  render(<Calculator />);
+  addCourse('CHM101', 3, 65);
+  const trigger = screen.getByRole('button', { name: /remove semester/i });
+  trigger.focus();
+  fireEvent.click(trigger);
+  const dialog = screen.getByRole('alertdialog', { name: /remove semester 1/i });
+  expect(dialog).toHaveTextContent('Its 1 course goes with it.');
+  fireEvent.keyDown(dialog, { key: 'Escape' });
+  expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+  expect(screen.getByText('CHM101')).toBeInTheDocument();
+  expect(trigger).toHaveFocus();
+});
+
+test('removes a semester after confirming', () => {
+  render(<Calculator />);
+  addCourse('CHM101', 3, 65);
+  fireEvent.click(screen.getByRole('button', { name: /add semester/i }));
+  fireEvent.click(screen.getByRole('button', { name: /remove semester/i }));
+  fireEvent.click(within(screen.getByRole('alertdialog')).getByRole('button', { name: /remove semester/i }));
+  expect(screen.queryByRole('tab', { name: /semester 2/i })).not.toBeInTheDocument();
+  expect(screen.getByText('CHM101')).toBeInTheDocument();
 });
 
 test('plans the average needed for a target', () => {

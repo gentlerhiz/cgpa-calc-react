@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BookOpen, Home, Plus, RotateCcw, Target, Trash2, X } from "lucide-react";
 
 import "./Calculator.css";
+import ConfirmDialog from "./ConfirmDialog";
 import Dial from "./Dial";
 import { CapMark, EmptySlip } from "./illustrations";
 import {
@@ -22,6 +23,8 @@ function Calculator() {
   const [error, setError] = useState("");
   const [target, setTarget] = useState("");
   const [remaining, setRemaining] = useState("");
+  const [confirm, setConfirm] = useState(null);
+  const codeInputRef = useRef(null);
 
   useEffect(() => save(data), [data]);
 
@@ -80,20 +83,36 @@ function Calculator() {
   };
 
   const removeSemester = () => {
-    if (!window.confirm(`Remove ${active.name} and its courses?`)) return;
-    setData((d) => {
-      const rest = d.semesters.filter((s) => s.id !== active.id);
-      const left = rest.length ? rest : [newSemester(1)];
-      return { ...d, semesters: left, activeId: left[0].id };
+    const name = active.name || "this semester";
+    const count = active.courses.length;
+    setConfirm({
+      title: `Remove ${name}?`,
+      message: count
+        ? `Its ${count} ${count === 1 ? "course goes" : "courses go"} with it. This can't be undone.`
+        : "It has no courses yet.",
+      confirmLabel: "Remove semester",
+      cancelLabel: "Keep it",
+      onConfirm: () =>
+        setData((d) => {
+          const rest = d.semesters.filter((s) => s.id !== active.id);
+          const left = rest.length ? rest : [newSemester(1)];
+          return { ...d, semesters: left, activeId: left[0].id };
+        }),
     });
   };
 
-  const clearAll = () => {
-    if (!window.confirm("Remove every semester and course?")) return;
-    const first = newSemester(1);
-    setData((d) => ({ ...d, semesters: [first], activeId: first.id }));
-    setError("");
-  };
+  const clearAll = () =>
+    setConfirm({
+      title: "Clear everything?",
+      message: `This removes all ${semesters.length === 1 ? "your courses" : `${semesters.length} semesters and their courses`}. This can't be undone.`,
+      confirmLabel: "Clear everything",
+      cancelLabel: "Keep my results",
+      onConfirm: () => {
+        const first = newSemester(1);
+        setData((d) => ({ ...d, semesters: [first], activeId: first.id }));
+        setError("");
+      },
+    });
 
   const plan =
     target !== "" && remaining !== ""
@@ -174,7 +193,7 @@ function Calculator() {
             <form className="add-row" onSubmit={handleSubmit}>
               <div className="field field-code">
                 <label htmlFor="courseCode">Course code</label>
-                <input type="text" id="courseCode" name="courseCode" placeholder="MTH101" autoComplete="off" required />
+                <input ref={codeInputRef} type="text" id="courseCode" name="courseCode" placeholder="MTH101" autoComplete="off" required />
               </div>
               <div className="field">
                 <label htmlFor="courseUnit">Course unit</label>
@@ -349,6 +368,18 @@ function Calculator() {
           )}
         </aside>
       </main>
+
+      {confirm && (
+        <ConfirmDialog
+          {...confirm}
+          fallbackFocus={codeInputRef}
+          onCancel={() => setConfirm(null)}
+          onConfirm={() => {
+            confirm.onConfirm();
+            setConfirm(null);
+          }}
+        />
+      )}
     </div>
   );
 }
