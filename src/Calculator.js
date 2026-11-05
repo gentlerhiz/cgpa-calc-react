@@ -63,7 +63,7 @@ function Calculator() {
         <input type="number" id="courseUnit" name="courseUnit" min="1" max="6" required />
 
         <label htmlFor="score">Score</label>
-        <input type="number" id="score" name="score" min="1" max="100" required />
+        <input type="number" id="score" name="score" min="0" max="100" required />
 
         <button type="submit">Add Course</button>
       </form>
