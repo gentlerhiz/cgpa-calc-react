@@ -100,3 +100,15 @@ table tr td:last-child:hover{
 .cgpa p {
   margin-bottom: 10px;
 }
+.del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: inherit;
+  line-height: 0;
+}
+.del:focus-visible {
+  outline: 2px solid #e1b70d;
+  outline-offset: 2px;
+}
