@@ -112,3 +112,12 @@ table tr td:last-child:hover{
   outline: 2px solid #e1b70d;
   outline-offset: 2px;
 }
+.clear {
+  margin-top: 8px;
+  padding: 6px 12px;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}

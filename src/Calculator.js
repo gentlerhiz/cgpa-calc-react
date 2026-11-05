@@ -133,7 +133,15 @@ function Calculator() {
       {courses.length > 0 && (
         <div className="cgpa">
           <p>Total Units: <b>{getTotalUnits()}</b> CGPA: <b>{getCGPA()}</b></p>
-          
+          <button
+            type="button"
+            className="clear"
+            onClick={() => {
+              if (window.confirm("Remove every course?")) setCourses([]);
+            }}
+          >
+            Clear all
+          </button>
         </div>
       )}
     </div>
