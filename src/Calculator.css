@@ -664,7 +664,8 @@
 }
 
 /* Planner inputs: no outline on focus; the border lights up instead. */
-.planner #target:focus-visible {
+.planner #target:focus-visible,
+.planner #remaining:focus-visible {
   outline: none;
   border-color: var(--lilac);
 }
