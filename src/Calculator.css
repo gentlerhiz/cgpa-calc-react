@@ -1,0 +1,553 @@
+.calc {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 20px 20px 64px;
+}
+
+/* Top bar */
+.calc-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: auto;
+  color: var(--text);
+  text-decoration: none;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.scale-switch {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: var(--radius-chip);
+  background: rgba(23, 12, 51, 0.6);
+  border: 1px solid rgba(183, 163, 255, 0.25);
+}
+
+.scale-switch button {
+  border: none;
+  background: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-chip);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+.scale-switch button[aria-pressed="true"] {
+  background: var(--lilac);
+  color: var(--night);
+}
+
+.bar-home {
+  padding: 8px 14px;
+}
+
+/* Two columns: the result slip and the summary */
+.calc-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 40px;
+  align-items: start;
+}
+
+.workbench h1 {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+
+/* Semester tabs sit on top of the slip like folder tabs */
+.semester-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 0 8px;
+  scrollbar-width: thin;
+}
+
+.semester-tabs button {
+  flex: none;
+  display: grid;
+  text-align: left;
+  border: none;
+  padding: 10px 16px 9px;
+  border-radius: 14px 14px 0 0;
+  background: rgba(183, 163, 255, 0.14);
+  color: var(--text);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.semester-tabs button small {
+  font-weight: 500;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+}
+
+.semester-tabs button[aria-selected="true"] {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.semester-tabs button[aria-selected="true"] small {
+  color: var(--ink-soft);
+}
+
+.semester-tabs .add-semester {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px dashed rgba(183, 163, 255, 0.5);
+  border-bottom: none;
+  color: var(--lilac);
+}
+
+/* The result slip */
+.slip {
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius-sheet);
+  padding: 26px 28px 18px;
+  box-shadow: 0 30px 60px -30px rgba(5, 0, 20, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+}
+
+.slip-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--paper-line);
+}
+
+.slip-name {
+  min-width: 0;
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--ink);
+  padding: 2px 0;
+  border-bottom: 2px dashed transparent;
+}
+
+.slip-name:hover,
+.slip-name:focus {
+  border-bottom-color: #cdbff5;
+  outline: none;
+}
+
+.slip-gpa {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.slip-gpa b {
+  font-family: var(--display);
+  font-size: 1.6rem;
+  color: var(--gown-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Add-course row */
+.add-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  margin: 20px 0 8px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.slip .field label {
+  color: var(--ink-soft);
+}
+
+.slip .field input {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: var(--radius-control);
+  border: 1.5px solid #d9cdf8;
+  background: #fff;
+  color: var(--ink);
+}
+
+.slip .field input::placeholder {
+  color: #b3a8cf;
+}
+
+.slip .field input:focus-visible {
+  outline: 3px solid rgba(122, 76, 255, 0.35);
+  outline-offset: 0;
+  border-color: #7a4cff;
+}
+
+.add-btn {
+  height: 46px;
+}
+
+.error {
+  margin: 8px 0 0;
+  color: #c2412f;
+  font-weight: 600;
+}
+
+/* Empty state */
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 28px 12px 20px;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.empty p {
+  margin: 0;
+  max-width: 32ch;
+}
+
+/* Courses table */
+.courses {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.courses th {
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  padding: 8px 8px;
+}
+
+.courses td {
+  padding: 10px 8px;
+  border-top: 1px solid var(--paper-line);
+}
+
+.courses .code {
+  font-weight: 700;
+}
+
+.grade {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  font-family: var(--display);
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.grade-a { background: var(--mint); }
+.grade-b { background: var(--sky); }
+.grade-c { background: var(--gold); }
+.grade-d { background: var(--amber); }
+.grade-e { background: #ff9fb6; }
+.grade-f { background: var(--coral); }
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink-soft);
+}
+
+.icon-btn:hover {
+  background: #f0eafd;
+  color: #c2412f;
+}
+
+.slip-foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: none;
+  padding: 6px 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.text-btn:hover {
+  color: #c2412f;
+}
+
+.text-btn.on-dark {
+  color: var(--text-soft);
+}
+
+.text-btn.on-dark:hover {
+  color: var(--coral);
+}
+
+/* Summary column: sits on the gown background, no card */
+.summary {
+  position: sticky;
+  top: 20px;
+  display: grid;
+  gap: 22px;
+}
+
+.dial {
+  position: relative;
+  width: 240px;
+  margin: 0 auto -44px;
+}
+
+.dial svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.dial-value {
+  transition: stroke-dasharray 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dial-readout {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+
+.dial-number {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 3.4rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.dial-max {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.degree-class {
+  margin: 0;
+  text-align: center;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: var(--gold);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  padding: 14px 0;
+  border-block: 1px solid rgba(183, 163, 255, 0.22);
+  text-align: center;
+}
+
+.stats dt {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+.stats dd {
+  margin: 2px 0 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}
+
+.mix-bar {
+  display: flex;
+  gap: 3px;
+  height: 12px;
+}
+
+.mix-bar span {
+  border-radius: 4px;
+}
+
+.mix-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+.mix-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mix-legend b {
+  color: var(--text);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.planner {
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(160deg, rgba(122, 76, 255, 0.28), rgba(42, 22, 96, 0.5));
+  border: 1px solid rgba(183, 163, 255, 0.25);
+}
+
+.planner-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.planner .field label {
+  color: var(--text-soft);
+}
+
+.planner .field input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-control);
+  border: 1px solid rgba(183, 163, 255, 0.35);
+  background: rgba(23, 12, 51, 0.55);
+}
+
+.planner-result {
+  margin: 12px 0 0;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.note {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.note svg {
+  flex: none;
+  margin-top: 3px;
+}
+
+@media (max-width: 920px) {
+  .calc-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .summary {
+    position: static;
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .calc {
+    padding: 16px 16px 48px;
+  }
+
+  .calc-bar {
+    flex-wrap: wrap;
+  }
+
+  .bar-home span {
+    display: none;
+  }
+
+  .scale-switch {
+    order: 3;
+    width: 100%;
+  }
+
+  .scale-switch button {
+    flex: 1;
+  }
+
+  .slip-name {
+    font-size: 1.3rem;
+  }
+
+  .slip {
+    padding: 20px 16px 14px;
+  }
+
+  .slip-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .add-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .field-code,
+  .add-btn {
+    grid-column: 1 / -1;
+  }
+
+  .courses th,
+  .courses td {
+    padding-inline: 4px;
+  }
+}
