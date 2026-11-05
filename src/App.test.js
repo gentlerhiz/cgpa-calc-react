@@ -8,6 +8,8 @@ test('renders the calculator heading', () => {
   ).toBeInTheDocument();
 });
 
+beforeEach(() => localStorage.clear());
+
 test('adds a course and removes it with the remove button', () => {
   render(<App />);
   fireEvent.change(screen.getByLabelText(/course code/i), { target: { value: 'MTH101' } });
@@ -18,4 +20,15 @@ test('adds a course and removes it with the remove button', () => {
   expect(screen.getByText('A')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: /remove mth101/i }));
   expect(screen.queryByText('MTH101')).not.toBeInTheDocument();
+});
+
+test('keeps added courses after a reload', () => {
+  const { unmount } = render(<App />);
+  fireEvent.change(screen.getByLabelText(/course code/i), { target: { value: 'PHY101' } });
+  fireEvent.change(screen.getByLabelText(/course unit/i), { target: { value: '2' } });
+  fireEvent.change(screen.getByLabelText(/score/i), { target: { value: '55' } });
+  fireEvent.click(screen.getByRole('button', { name: /add course/i }));
+  unmount();
+  render(<App />);
+  expect(screen.getByText('PHY101')).toBeInTheDocument();
 });

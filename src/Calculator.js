@@ -1,9 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./App.css";
 
+const STORAGE_KEY = "cgpa-courses";
+
+function loadCourses() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return Array.isArray(saved) ? saved : [];
+  } catch {
+    return [];
+  }
+}
+
 function Calculator() {
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState(loadCourses);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(courses));
+    } catch {
+      // Storage can be full or blocked; the calculator still works without it.
+    }
+  }, [courses]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
