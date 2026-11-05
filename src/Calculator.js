@@ -15,6 +15,7 @@ function loadCourses() {
 
 function Calculator() {
   const [courses, setCourses] = useState(loadCourses);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     try {
@@ -26,7 +27,12 @@ function Calculator() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const courseCode = event.target.elements.courseCode.value;
+    const courseCode = event.target.elements.courseCode.value.trim().toUpperCase();
+    if (courses.some((course) => course.courseCode === courseCode)) {
+      setError(`${courseCode} is already in the list.`);
+      return;
+    }
+    setError("");
     const courseUnit = parseInt(event.target.elements.courseUnit.value);
     const score = parseInt(event.target.elements.score.value);
     const gradePoints = getGradePoints(score);
@@ -94,6 +100,7 @@ function Calculator() {
 
         <button type="submit">Add Course</button>
       </form>
+      {error && <p role="alert" className="error">{error}</p>}
       {courses.length > 0 && (
         <table>
           <thead>
