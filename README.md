@@ -9,7 +9,8 @@ A React app for Nigerian university students to work out their GPA and CGPA. Add
 - The 5.0 scale (NUC) or the 4.0 scale, with degree classes for each
 - A CGPA dial with a tick at each degree-class boundary
 - A target planner: enter the CGPA you want and the units left, and see the average you need
-- Courses are saved in your browser, so a refresh keeps them
+- Your semesters, courses, scale and target are saved in your browser (localStorage), so they are there when you come back
+- Each field is checked as you type, with a clear message under it
 - Course codes are tidied (` mth101 ` becomes `MTH101`), and duplicates in a semester are refused
 - Works from the keyboard and down to phone width
 
