@@ -2,6 +2,8 @@
 
 A React app for Nigerian university students to work out their GPA and CGPA. Add each course's code, units and score, semester by semester, and see your CGPA, degree class and what you need for a target.
 
+**Try it:** [cgpa-calc-react.vercel.app](https://cgpa-calc-react.vercel.app/)
+
 ## Features
 
 - A landing page that explains how CGPA is worked out, and the calculator at `#/calculator`
