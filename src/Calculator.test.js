@@ -16,7 +16,20 @@ test('adds a course, shows its grade and removes it', () => {
   expect(screen.getByText('MTH101')).toBeInTheDocument();
   expect(screen.getByRole('row', { name: /mth101/i })).toHaveTextContent('MTH101372A15');
   fireEvent.click(screen.getByRole('button', { name: /remove mth101/i }));
+  const dialog = screen.getByRole('alertdialog', { name: /remove mth101\?/i });
+  expect(dialog).toHaveTextContent('It comes out of Semester 1');
+  fireEvent.click(within(dialog).getByRole('button', { name: /remove course/i }));
   expect(screen.queryByText('MTH101')).not.toBeInTheDocument();
+  expect(screen.getByLabelText(/course code/i)).toHaveFocus();
+});
+
+test('keeps a course when its removal is cancelled', () => {
+  render(<Calculator />);
+  addCourse('MTH101', 3, 72);
+  fireEvent.click(screen.getByRole('button', { name: /remove mth101/i }));
+  fireEvent.click(within(screen.getByRole('alertdialog')).getByRole('button', { name: /keep it/i }));
+  expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+  expect(screen.getByText('MTH101')).toBeInTheDocument();
 });
 
 test('works out the CGPA and degree class on the 5.0 scale', () => {
